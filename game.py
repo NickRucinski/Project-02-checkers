@@ -27,14 +27,13 @@ class Game:
     posts = subreddit.new(limit=10)
     current_post = next(posts)
 
-    def __init__(self, win, color, player1, player2):
+    def __init__(self, screen, color, player1, player2):
         """
         The init function initializes the Game class with a window, color, player1, and player2, and sets the turn start time and turn timeout. The text color is set to white,
         and the urgent text color is set to red. The screen is set to the window size, and the player names are set to player1 and player2.
         """
         self.turn_start_time = pygame.time.get_ticks()
         self.turn_timeout = 5200  # 5.2 seconds per turn
-        self.win = win
         self.color = color
         self.selected = None
         self.board = Main_Board(self.color)
@@ -44,7 +43,7 @@ class Game:
         self.small_font = pygame.font.Font(None, 24)
         self.text_color = WHITE  # Text color
         self.text_urgent_color = RED  # Text color when time is running out
-        self.screen = pygame.display.set_mode((1000, 700))
+        self.screen = screen
         self.player1 = player1
         self.player2 = player2
 
@@ -144,7 +143,7 @@ class Game:
         """
         The update function updates the board to show the current board and features.
         """
-        self.board.draw(self.win)
+        self.board.draw(self.screen)
         self.show_available_moves(self.valid_moves)
         self.check_turn_timeout()
         self.display_turn()
@@ -202,7 +201,7 @@ class Game:
         """
         for move in moves:
             row, col = move
-            pygame.draw.circle(self.win, YELLOW,
+            pygame.draw.circle(self.screen, YELLOW,
                                (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), 15)
 
     def change_turn(self):

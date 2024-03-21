@@ -13,10 +13,6 @@ from MusicClass import BackgroundMusic
 from SharedObjects import background_music
 from constants import *
 
-Width, Height = 1000, 700
-background_image = pygame.transform.scale(BACKGROUND_IMAGE, (Width, Height))
-screen = pygame.display.set_mode([Width, Height])
-pygame.init()
 
 player1 = Player("Player 1", 0, RED)
 player2 = Player("Player 2", 0, BLACK)
@@ -39,11 +35,13 @@ class SecondMenu:
     The class also has three functions, start_game_menu, start_game_vs_player, and start_game_vs_computer.
     """
 
-    def __init__(self, track):
-        self.selected_music_track = track
-        self.background_music = BackgroundMusic([track])
-
-    color = RED
+    def __init__(self, color, screen, music_manager: BackgroundMusic):
+        self.screen = screen
+        self.width = screen.get_width()
+        self.height = screen.get_height()
+        self.selected_music_track = music_manager.current_track
+        self.background_music = music_manager
+        self.board_color = color
 
     def start_game_menu(self):
         """
@@ -51,31 +49,30 @@ class SecondMenu:
         """
 
         global player1, player2
-        start_game_screen = pygame.display.set_mode([Width, Height])
         # image of the background
-        background_image = pygame.transform.scale(BACKGROUND_IMAGE, (Width, Height))
-        start_game_screen.blit(background_image, (0, 0))
+        background_image = pygame.transform.scale(BACKGROUND_IMAGE, (self.width, self.height))
+        self.screen.blit(background_image, (0, 0))
 
         # Title
         Text(
             "Select Game Mode",
-            screen,
-            (Width // 2, 38),
+            self.screen,
+            (self.width // 2, 38),
             FONT_64,
             WHITE,
         )
         # Credits text
         Text(
             "Developed by Wander Cerda-Torres, Barry Lin,",
-            screen,
-            (Width // 2, 650),
+            self.screen,
+            (self.width // 2, 650),
             FONT_24,
             WHITE,
         )
         Text(
             "Nathan McCourt, Jonathan Stanczak, and Geonhee Yu",
-            screen,
-            (Width // 2, 670),
+            self.screen,
+            (self.width // 2, 670),
             FONT_24,
             WHITE,
         )
@@ -83,8 +80,8 @@ class SecondMenu:
         # PvP Button
         start_pvp_button = Button(
             "Start Game VS Player",
-            start_game_screen,
-            (Width // 2 - 150, Height // 3 - 25),
+            self.screen,
+            (self.width // 2 - 150, self.height // 3 - 25),
             (300, 50),
             GREY
         )
@@ -93,15 +90,15 @@ class SecondMenu:
             score_manager.add_user(player1.username),
             player2.get_player_name(),
             score_manager.add_user(player2.username),
-            self.start_game_vs_player(start_game_screen),
+            self.start_game_vs_player(),
             score_manager.save_scores()
         ))
 
         # PvC Button
         start_pvc_button = Button(
             "Start Game VS Computer",
-            start_game_screen,
-            (Width // 2 - 150, Height // 3 + BUTTON_HEIGHT + BUTTON_SPACING),
+            self.screen,
+            (self.width // 2 - 150, self.height // 3 + BUTTON_HEIGHT + BUTTON_SPACING),
             (300, 50),
             GREY,
         )
@@ -109,8 +106,8 @@ class SecondMenu:
         # Exit Second Menu Button
         exit_button = Button(
             "Back to Main Menu",
-            start_game_screen,
-            (Width // 2 - 150, Height // 3 + 135),
+            self.screen,
+            (self.width // 2 - 150, self.height // 3 + 135),
             (300, 50),
             GREY
         )
@@ -138,27 +135,27 @@ class SecondMenu:
                     elif start_pvc_button.area.collidepoint(event.pos):  # Start Game VS Computer button clicked
                         player1.get_player_name()
                         score_manager.add_user(player1)
-                        self.start_game_vs_computer(start_game_screen)
+                        self.start_game_vs_computer()
                         score_manager.save_scores()
                         return
                     # score_manager.save_scores() # now inside elif so scores are updated before returning to main
                     elif event.type == self.background_music.SONG_END:
                         self.background_music.handle_event(event)
 
-    def start_game_vs_player(self, screen):
+    def start_game_vs_player(self):
         """
-        The start game vs player function starts the game against another player by creating an object of the game class and passing the screen, color, and player names.
+        The start game vs player function starts the game against another player by creating an object of the game class and passing the self.screen, color, and player names.
         """
         run = True
         clock = pygame.time.Clock()
-        game = Game(screen, self.color, player1.username, player2.username)
+        game = Game(self.screen, self.board_color, player1.username, player2.username)
         global score_manager, user_scores
 
         # Exit Button
         game_exit_button = Button(
             "Exit Game",
-            screen,
-            (Width // 2 - 150, Height // 3 + 135),
+            self.screen,
+            (self.width // 2 - 150, self.height // 3 + 135),
             (300, 50),
             GREY
         )
@@ -196,20 +193,20 @@ class SecondMenu:
 
             game.update()
 
-    def start_game_vs_computer(self, screen):
+    def start_game_vs_computer(self):
         """
-        The start game vs computer function starts the game against the computer by creating an object of the game class and passing the screen, color, and player name.
+        The start game vs computer function starts the game against the computer by creating an object of the game class and passing the self.screen, color, and player name.
         """
         run = True
         clock = pygame.time.Clock()
-        game = Game(screen, self.color, player1.username, "Computer")
+        game = Game(self.screen, self.board_color, player1.username, "Computer")
         global score_manager, user_scores
 
         # Exit Button
         game_exit_button = Button(
             "Exit Game",
-            screen,
-            (Width // 2 - 150, Height // 3 + 135),
+            self.screen,
+            (self.width // 2 - 150, self.height // 3 + 135),
             (300, 50),
             GREY
         )
