@@ -16,13 +16,14 @@ class Player:
     """
     The Player class is responsible for managing the players, and contains functions to initialize a player, update the win and loss, and get the player name.
     """
-    def __init__(self, username, score):
+    def __init__(self, username, score, color):
         """
         The init function initializes the player object with a username and score.
         """
         self.username = username
-        self.score = 0
+        self.score = score
         self.win = 0
+        self.color = color
         
     
     def draw_text_input(self, player_name, error_msg="name error"):
