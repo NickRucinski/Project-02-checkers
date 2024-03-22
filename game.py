@@ -8,7 +8,7 @@ import praw
 from constants import RED, WHITE, YELLOW, SQUARE_SIZE
 from Main_Board import Main_Board
 
-class Game: 
+class Game:
     """
     The Game class is responsible for managing the game logic, and contains functions to initialize the game, check the turn timeout, display the turn,
     display the piece count, display the player names, update the board, check for a winner, select a piece, move a piece, show available moves, change the turn,
@@ -73,8 +73,8 @@ class Game:
             self.screen.blit(text_surface, (coordinate[0], y))
             y += text_surface.get_height()
         return y
-        
-   
+
+
     def display_turn(self):
         """
         The display turn function displays the current turn on the screen.
@@ -86,7 +86,7 @@ class Game:
         text_surface = self.font.render(text, True, self.text_color)
         self.screen.blit(text_surface, (715, 100))
 
-    def display_piece_count(self): 
+    def display_piece_count(self):
         """
         The display piece count function displays the piece count on the screen.
         """
@@ -97,7 +97,7 @@ class Game:
         self.screen.blit(text_surface, (715, 150))
         self.screen.blit(text_surface2, (715, 200))
 
-    def display_player_names(self, player1, player2): 
+    def display_player_names(self, player1, player2):
         """
         The display player names function displays the player names on the screen.
         """
@@ -108,7 +108,7 @@ class Game:
         self.screen.blit(text_surface, (715, 350))
         self.screen.blit(text_surface2, (715, 400))
 
-    def display_api(self): 
+    def display_api(self):
         """
         Displays the reddit api on the screen
         """
@@ -119,7 +119,7 @@ class Game:
         title_end = self.render_text(title, (715, 450), 300, self.font)
         self.render_text(description, (715, title_end+25),300, self.small_font)
 
-    def update(self): 
+    def update(self):
         """
         The update function updates the board to show the current board and features.
         """
@@ -131,14 +131,14 @@ class Game:
         self.display_player_names(self.player1, self.player2)
         self.display_api()
         pygame.display.update()
-        
-    def winner(self): 
+
+    def winner(self):
         """
         The winner function checks if a winner has been found by calling the board winner function and returns the winner if one has been found.
         """
         return self.board.winner()
 
-    def select(self, screen, row, col): 
+    def select(self, screen, row, col):
         """
         The select function selects a piece and shows the available moves for the piece.
         """
@@ -147,7 +147,7 @@ class Game:
             if not result:
                 self.selected = None
                 self.select(screen, row, col)
-        
+
         try:
             piece = self.board.get_piece(row, col)
             if piece != 0 and piece.color == self.turn:
@@ -156,7 +156,7 @@ class Game:
                 return True
         except:
             return None
-            
+
         return False
 
     def move(self, screen, row, col):
@@ -176,7 +176,7 @@ class Game:
 
         return False
 
-    def show_available_moves(self, moves): 
+    def show_available_moves(self, moves):
         """
         The show available moves function shows the available moves for the selected piece.
         """
@@ -184,7 +184,7 @@ class Game:
             row, col = move
             pygame.draw.circle(self.win, YELLOW, (col * SQUARE_SIZE + SQUARE_SIZE//2, row * SQUARE_SIZE + SQUARE_SIZE//2), 15)
 
-    def change_turn(self): 
+    def change_turn(self):
         """
         The change turn function changes the turn to the other player/color and resets the turn timer.
         """
@@ -194,19 +194,15 @@ class Game:
         else:
             self.turn = RED
 
-    def get_board(self): 
+    def get_board(self):
         """
         The get board function returns the current board.
         """
         return self.board
 
-    def ai_move(self, board): 
+    def ai_move(self, board):
         """
         The ai move function moves the AI piece in a player vs computer game.
         """
         self.board = board
         self.change_turn()
-        
-
-        
-        

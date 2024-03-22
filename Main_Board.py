@@ -12,8 +12,8 @@ OUTLINE = 3
 
 class Main_Board:
     """
-    The Main_Board class is responsible for managing the board and the pieces, and contains functions to draw the board, 
-    evaluate the board, get all pieces, get a single piece, move a piece (left or right), create the board, draw the board, 
+    The Main_Board class is responsible for managing the board and the pieces, and contains functions to draw the board,
+    evaluate the board, get all pieces, get a single piece, move a piece (left or right), create the board, draw the board,
     remove a piece, and check for a winner.
     """
     def __init__(self, color):
@@ -25,7 +25,7 @@ class Main_Board:
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.create_board()
-    
+
     def draw_squares(self, win):
         """
         The draw squares function draws the squares on the board.
@@ -92,35 +92,35 @@ class Main_Board:
                         temp_x = c * SQUARE_SIZE + SQUARE_SIZE // 2
                         temp_y = r * SQUARE_SIZE + SQUARE_SIZE // 2
                         pygame.draw.circle(screen, temp_piece.color, (temp_x, temp_y), radius)
-        
+
             pygame.display.flip()
             time.sleep(0.01)  # Slow down the animation; adjust as necess
-            
+
         piece.move(row, col)
-          
+
         if row == ROWS - 1 or row == 0:
             piece.make_king()
             if piece.color == WHITE:
                 self.white_kings += 1
             else:
-                self.red_kings += 1 
-                
-       
+                self.red_kings += 1
+
+
     def AIMove(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
-        
+
         if row == ROWS - 1 or row == 0:
             piece.make_king()
             if piece.color == WHITE:
                 self.white_kings += 1
             else:
-                self.red_kings += 1 
-                
-        
+                self.red_kings += 1
 
 
-    def get_piece(self, row, col): 
+
+
+    def get_piece(self, row, col):
         """
         The get piece function gets the piece at a given row and column and returns the piece.
         """
@@ -145,9 +145,9 @@ class Main_Board:
                         self.board[row].append(0)
                 else:
                     self.board[row].append(0)
-        
-    def draw(self, win): 
-        """ 
+
+    def draw(self, win):
+        """
         The draw function draws the board and the pieces.
         """
         self.draw_squares(win)
@@ -157,7 +157,7 @@ class Main_Board:
                 if piece != 0:
                     piece.draw(win)
 
-    def remove(self, pieces): 
+    def remove(self, pieces):
         """
         The remove function removes a piece from the board in the event that a piece is jumped.
         """
@@ -168,8 +168,8 @@ class Main_Board:
                     self.red_left -= 1
                 else:
                     self.white_left -= 1
-    
-    def winner(self): 
+
+    def winner(self):
         """
         The winner function checks if a winner has been found and returns the winner. If no winner has been found, None is returned.
         If a user has no pieces left or no moves left, the other user is the winner.
@@ -178,10 +178,10 @@ class Main_Board:
             return WHITE
         elif self.white_left <= 0 or self.no_moves(WHITE):
             return RED
-        
-        return None 
-    
-    def get_valid_moves(self, piece): 
+
+        return None
+
+    def get_valid_moves(self, piece):
         """
         The get valid moves function gets all the valid moves for a given piece and returns the moves.
         """
@@ -198,7 +198,7 @@ class Main_Board:
 
         return moves
 
-    def move_left(self, start, stop, step, color, left, skipped=[]): 
+    def move_left(self, start, stop, step, color, left, skipped=[]):
         """
         The move left function moves a piece to the left.
         """
@@ -208,8 +208,8 @@ class Main_Board:
         stop = int(stop)
         step = int(step)
         left = int(left)
-        
-        
+
+
         for r in range(start, stop, step):
             if left < 0:
                 break
@@ -221,7 +221,7 @@ class Main_Board:
                     moves[(r, left)] = last + skipped
                 else:
                     moves[(r, left)] = last
-                
+
                 if last:
                     if step == -1:
                         row = max(r-3, -1)
@@ -234,11 +234,11 @@ class Main_Board:
                 break
             else:
                 last = [current]
-                
+
             left -= 1
         return moves
 
-    def move_right(self, start, stop, step, color, right, skipped=[]): 
+    def move_right(self, start, stop, step, color, right, skipped=[]):
         """
         The move right function moves a piece to the right.
         """
@@ -248,7 +248,7 @@ class Main_Board:
         stop = int(stop)
         step = int(step)
         right = int(right)
-        
+
         for r in range(start, stop, step):
             if right >= COLS:
                 break
