@@ -186,7 +186,7 @@ class SecondMenu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
-                    game.select(row, col)
+                    game.select(self.screen, row, col)
                     # Check for background music event
                 if event.type == background_music.SONG_END:
                     background_music.handle_event(event)
@@ -237,7 +237,7 @@ class SecondMenu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
-                    game.select(row, col)
+                    game.select(self.screen, row, col)
 
                 if event.type == background_music.SONG_END:
                     background_music.handle_event(event)
