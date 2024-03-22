@@ -3,15 +3,9 @@ Main.py
 The main file holds menu operations for the game including sound, settings, leaderboard, tutorial, and board customization.
 
 """
-import pygame
-from Button import Button
-from Icon import Icon
 from MainMenu import MainMenu
 from MusicClass import BackgroundMusic
-from Text import Text
 from constants import *
-from ScoreManager import ScoreManager
-from SecondMenu import SecondMenu
 
 pygame.init()
 pygame.mixer.init()  # initialize pygame mixer for music
